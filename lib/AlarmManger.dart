@@ -18,19 +18,25 @@ class _AlarmState extends State<Alarm> {
 
 
 
-  void startAlarmService() async {
+  void startAlarmService(BuildContext context) async {
 
 
       var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
       String data =
       await methodChannel.invokeMethod("startAlarm", [timeInMillies,_hour, _minute]);
       debugPrint(data);
+      showToast(context,data);
   }
 
-  void deleteAlarm() async {
+  void deleteAlarm(BuildContext context) async {
     var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
       String data = await methodChannel.invokeMethod("deleteAlarm");
      debugPrint(data);
+     showToast(context, data);
+  }
+  void showToast(BuildContext context, String data){
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text(data),));
+
   }
 
   void _selectTime(BuildContext context) async {
@@ -47,7 +53,7 @@ class _AlarmState extends State<Alarm> {
         timeInMillies = DateTime(_year, _month, _day, _hour, _minute)
             .millisecondsSinceEpoch;
         print(timeInMillies);
-        startAlarmService();
+        startAlarmService(context);
       });
     }
   }
@@ -56,30 +62,32 @@ class _AlarmState extends State<Alarm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Alarm Manager")),
-      body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _timeSet ? Text(_time.toString().substring(10, 15)) : Container(),
-              RaisedButton(
-                  child: Text('Select Time'),
-                  onPressed: () {
-                    _selectTime(context);
-                  }),
-              _timeSet
-                  ? RaisedButton(
-                      child: Text(
-                          "Delete Alarm for ${_time.toString().substring(10, 15)}"),
-                      onPressed: () {
-                        setState(() {
-                          _timeSet = false;
-                        });
-                        deleteAlarm();
-                      },
-                    )
-                  : Container()
-            ],
+      body: Builder(
+        builder: (context)=> Container(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _timeSet ? Text(_time.toString().substring(10, 15)) : Container(),
+                RaisedButton(
+                    child: Text('Select Time'),
+                    onPressed: () {
+                      _selectTime(context);
+                    }),
+                _timeSet
+                    ? RaisedButton(
+                        child: Text(
+                            "Delete Alarm for ${_time.toString().substring(10, 15)}"),
+                        onPressed: () {
+                          setState(() {
+                            _timeSet = false;
+                          });
+                          deleteAlarm(context);
+                        },
+                      )
+                    : Container()
+              ],
+            ),
           ),
         ),
       ),
