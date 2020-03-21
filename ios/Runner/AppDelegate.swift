@@ -20,10 +20,11 @@ import UserNotifications
     let channel = FlutterMethodChannel(name: "cheeseball.demo_alarm_manager", binaryMessenger: controller)
         channel.setMethodCallHandler({
             (call: FlutterMethodCall, result: FlutterResult) -> Void in
-            guard call.method == "startAlarm" || else {
+            guard call.method == "startAlarm"  else {
                 result(FlutterMethodNotImplemented)
                 return
             }
+            let arg = (channel.arguments as! [Array]). first else { return }
             if (call.method== "startAlarm"){
               self.startAlarmService(result: result)
 
@@ -44,8 +45,8 @@ import UserNotifications
       content.userInfo = ["example": "information"]
 
       var date = DateComponents()
-      date.hour = FlutterResult[0]
-      date.minute = FlutterResult[1]
+      date.hour = arg[1]
+      date.minute = arg[2]
       let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
 
       let trigger = UNCalendarNotificationTrigger(dateMatching: FlutterResult, repeats: true)

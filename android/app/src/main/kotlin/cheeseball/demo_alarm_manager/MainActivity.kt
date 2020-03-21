@@ -12,15 +12,23 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 
 
 class MainActivity : FlutterActivity() {
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var intentAlarm: Intent
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
 
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        intentAlarm = Intent(this, alarm_service::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intentAlarm, 0)
+
         MethodChannel(flutterView, "cheeseball.demo_alarm_manager")
                 .setMethodCallHandler { call, result ->
                     if (call.method == "startAlarm") {
-                        setAlarm(call.arguments as Long)
+                        val time = (call.arguments) as List<Any>
+                        setAlarm(time[0] as Long)
                         result.success("Alarm is set successfully")
                     } else if (call.method == "deleteAlarm") {
                         deleteAlarm()
@@ -31,12 +39,8 @@ class MainActivity : FlutterActivity() {
 
     }
 
-    private val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    private val intentAlarm = Intent(this, alarm_service::class.java)
-    private val pendingIntent = PendingIntent.getBroadcast(this, 0, intentAlarm, 0)
-
     private fun setAlarm(timeinMillies: Long) {
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeinMillies, AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeinMillies , AlarmManager.INTERVAL_DAY, pendingIntent)
         Toast.makeText(this, "Alarm is set", Toast.LENGTH_SHORT).show()
     }
 
