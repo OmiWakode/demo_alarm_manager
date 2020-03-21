@@ -15,25 +15,22 @@ class _AlarmState extends State<Alarm> {
   int _hour;
   int _minute;
   var timeInMillies;
-  static const methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
+
 
 
   void startAlarmService() async {
-  if (TargetPlatform.android!=null) {
-    String data =
-    await methodChannel.invokeMethod("startAlarm", timeInMillies);
-    debugPrint(data);
-  }
-  else if (TargetPlatform.iOS!=null){
-    String data =
-    await methodChannel.invokeMethod("startAlarm", [_hour , _minute]);
-    debugPrint(data);
-  }
+
+
+      var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
+      String data =
+      await methodChannel.invokeMethod("startAlarm", [timeInMillies,_hour, _minute]);
+      debugPrint(data);
   }
 
   void deleteAlarm() async {
+    var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
       String data = await methodChannel.invokeMethod("deleteAlarm");
-      debugPrint(data);
+     debugPrint(data);
   }
 
   void _selectTime(BuildContext context) async {
@@ -78,7 +75,6 @@ class _AlarmState extends State<Alarm> {
                         setState(() {
                           _timeSet = false;
                         });
-
                         deleteAlarm();
                       },
                     )
