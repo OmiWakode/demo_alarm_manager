@@ -50,7 +50,7 @@ import UserNotifications
         let content = UNMutableNotificationContent()
         let center = UNUserNotificationCenter.current()
       content.title = "Alarm"
-      content.body = "Lots of text"
+      content.body = "This is an alarm notification"
       content.sound = UNNotificationSound.default()
       content.categoryIdentifier = "Local Notification"
       content.userInfo = ["example": "information"]
