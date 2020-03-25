@@ -41,7 +41,11 @@ class MainActivity : FlutterActivity() {
 
     private fun setAlarm(timeinMillies: Long) {
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeinMillies , AlarmManager.INTERVAL_DAY, pendingIntent)
+<<<<<<< HEAD
 
+=======
+        Toast.makeText(this, "Alarm is set", Toast.LENGTH_SHORT).show()
+>>>>>>> 6d064e1361f5b6ed8ae75a687b9405cfb15122b7
     }
 
     private fun deleteAlarm() {
