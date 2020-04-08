@@ -147,8 +147,8 @@ iOS side
 <img src = "Screenshot_20200317-033228.png" height = "500em"/> <img src = "Screenshot_20200317-033235.png" height = "500em"/>
 <img src = "Screenshot_20200317-033311.png" height = "500em"/>
 
-####iOS 
-<img src = "1.png" height = "500em"/> <img src = "2.png" height = "500em"/>
-<img src = "3.png" height = "500em"/>
+#### iOS 
+<img src = "1.jpg" height = "500em"/> <img src = "2.jpg" height = "500em"/>
+<img src = "3.jpg" height = "500em"/>
 
 
