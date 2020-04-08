@@ -9,39 +9,43 @@ class Alarm extends StatefulWidget {
 class _AlarmState extends State<Alarm> {
   bool _timeSet = false;
   TimeOfDay _time = TimeOfDay.now();
-  var _day = DateTime.now().day;
-  var _month = DateTime.now().month;
-  var _year = DateTime.now().year;
+  var _day = DateTime
+      .now()
+      .day;
+  var _month = DateTime
+      .now()
+      .month;
+  var _year = DateTime
+      .now()
+      .year;
   int _hour;
   int _minute;
   var timeInMillies;
 
 
-
   void startAlarmService(BuildContext context) async {
-
-
-      var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
-      String data =
-      await methodChannel.invokeMethod("startAlarm", [timeInMillies,_hour, _minute]);
-      debugPrint(data);
-      showToast(context,data);
+    var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
+    String data =
+    await methodChannel.invokeMethod(
+        "startAlarm", [timeInMillies, _hour, _minute]);
+    debugPrint(data);
+    showToast(context, data);
   }
 
   void deleteAlarm(BuildContext context) async {
     var methodChannel = MethodChannel("cheeseball.demo_alarm_manager");
-      String data = await methodChannel.invokeMethod("deleteAlarm");
-     debugPrint(data);
-     showToast(context, data);
+    String data = await methodChannel.invokeMethod("deleteAlarm");
+    debugPrint(data);
+    showToast(context, data);
   }
-  void showToast(BuildContext context, String data){
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(data),));
 
+  void showToast(BuildContext context, String data) {
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text(data),));
   }
 
   void _selectTime(BuildContext context) async {
     TimeOfDay picked =
-        await showTimePicker(context: context, initialTime: _time);
+    await showTimePicker(context: context, initialTime: _time);
 
     if (picked != null && picked != _time) {
       print("Time Current: ${_time.toString().substring(10, 15)}");
@@ -63,33 +67,37 @@ class _AlarmState extends State<Alarm> {
     return Scaffold(
       appBar: AppBar(title: Text("Alarm Manager")),
       body: Builder(
-        builder: (context)=> Container(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _timeSet ? Text(_time.toString().substring(10, 15)) : Container(),
-                RaisedButton(
-                    child: Text('Select Time'),
-                    onPressed: () {
-                      _selectTime(context);
-                    }),
-                _timeSet
-                    ? RaisedButton(
-                        child: Text(
-                            "Delete Alarm for ${_time.toString().substring(10, 15)}"),
+        builder: (context) =>
+            Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _timeSet
+                        ? Text(_time.toString().substring(10, 15))
+                        : Container(),
+                    RaisedButton(
+                        child: Text('Select Time'),
                         onPressed: () {
-                          setState(() {
-                            _timeSet = false;
-                          });
-                          deleteAlarm(context);
-                        },
-                      )
-                    : Container()
-              ],
+                          _selectTime(context);
+                        }),
+                    _timeSet
+                        ? RaisedButton(
+                      child: Text(
+                          "Delete Alarm for ${_time.toString().substring(
+                              10, 15)}"),
+                      onPressed: () {
+                        setState(() {
+                          _timeSet = false;
+                        });
+                        deleteAlarm(context);
+                      },
+                    )
+                        : Container()
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
       ),
     );
   }
